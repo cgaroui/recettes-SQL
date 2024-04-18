@@ -1,7 +1,9 @@
 --1- Afficher toutes les recettes disponibles (nom de la recette, catégorie et temps de préparation) triées de façon décroissante sur la durée de réalisation
-    SELECT nom, id_categorie, duree
+    SELECT recette.nom, duree
     FROM recette
+    INNER JOIN categorie ON categorie.id_categorie = recette.id_categorie
     ORDER BY duree DESC;
+
 
 
 --2- En modifiant la requête précédente, faites apparaître le nombre d’ingrédients nécessaire par recette.
