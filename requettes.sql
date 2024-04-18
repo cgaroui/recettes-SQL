@@ -106,10 +106,23 @@
 
 
 --16- Afficher la / les recette(s) les plus rapides à préparer
+    SELECT nom
+    FROM recette
+    WHERE duree = (SELECT MIN(duree) FROM recette);
 
 
-17- Trouver les recettes qui ne nécessitent aucun ingrédient (par exemple la recette de la tasse d’eau chaude qui consiste à verser de l’eau chaude dans une tasse)
-18- Trouver les ingrédients qui sont utilisés dans au moins 3 recettes
-19- Ajouter un nouvel ingrédient à une recette spécifique
-20- Bonus : Trouver la recette la plus coûteuse de la base de données (il peut y avoir des ex aequo, il est 
-donc exclu d’utiliser la clause LIMIT
+--17- Trouver les recettes qui ne nécessitent aucun ingrédient (par exemple la recette de la tasse d’eau chaude qui consiste à verser de l’eau chaude dans une tasse)
+    SELECT nom
+    FROM recette
+    WHERE id_recette NOT IN (
+    SELECT id_recette
+    FROM contenir
+    WHERE contenir.id_recette = recette.id_recette);
+--18- Trouver les ingrédients qui sont utilisés dans au moins 3 recettes
+
+--19- Ajouter un nouvel ingrédient à une recette spécifique
+
+ INTO contenir (id_recette, id_ingredient, quantite) VALUES (27, 11, 5);
+
+--20- Bonus : Trouver la recette la plus coûteuse de la base de données (il peut y avoir des ex aequo, il est 
+--donc exclu d’utiliser la clause LIMIT
