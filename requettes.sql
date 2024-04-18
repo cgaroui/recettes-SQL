@@ -5,6 +5,11 @@
 
 
 --2- En modifiant la requête précédente, faites apparaître le nombre d’ingrédients nécessaire par recette.
+    SELECT recette.nom,  COUNT(contenir.id_ingredient) AS nombre_ingredients
+    FROM recette
+    INNER JOIN contenir ON recette.id_recette = contenir.id_recette
+    GROUP BY recette.id_recette, recette.nom, recette.id_categorie, recette.duree
+    ORDER BY recette.duree DESC;
 
 
 
@@ -112,17 +117,36 @@
 
 
 --17- Trouver les recettes qui ne nécessitent aucun ingrédient (par exemple la recette de la tasse d’eau chaude qui consiste à verser de l’eau chaude dans une tasse)
-    SELECT nom
+   SELECT recette.nom
     FROM recette
-    WHERE id_recette NOT IN (
-    SELECT id_recette
-    FROM contenir
-    WHERE contenir.id_recette = recette.id_recette);
+    INNER JOIN contenir ON recette.id_recette = contenir.id_recette
+    INNER JOIN ingredient ON contenir.id_ingredient = ingredient.id_ingredient
+    GROUP BY recette.id_recette, recette.nom
+    HAVING COUNT(ingredient.id_ingredient) = 1;
+
+
+
+
 --18- Trouver les ingrédients qui sont utilisés dans au moins 3 recettes
+    SELECT ingredient.nom
+    FROM ingredient
+    INNER JOIN contenir ON ingredient.id_ingredient = contenir.id_ingredient
+    GROUP BY ingredient.id_ingredient, ingredient.nom
+    HAVING COUNT(DISTINCT contenir.id_recette) >= 3;
+
 
 --19- Ajouter un nouvel ingrédient à une recette spécifique
 
- INTO contenir (id_recette, id_ingredient, quantite) VALUES (27, 11, 5);
+INSERT INTO contenir (id_recette, id_ingredient, quantite)
+VALUES (27, 11, 5);
+
 
 --20- Bonus : Trouver la recette la plus coûteuse de la base de données (il peut y avoir des ex aequo, il est 
 --donc exclu d’utiliser la clause LIMIT
+    SELECT recette.nom, SUM(prix * quantite) AS prix_total
+    FROM recette 
+    INNER JOIN contenir ON recette.id_recette = contenir.id_recette
+    INNER JOIN ingredient ON contenir.id_ingredient = ingredient.id_ingredient
+    GROUP BY recette.id_recette, recette.nom
+    ORDER BY prix_total DESC;
+
