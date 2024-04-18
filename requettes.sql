@@ -5,7 +5,6 @@
     ORDER BY duree DESC;
 
 
-
 --2- En modifiant la requête précédente, faites apparaître le nombre d’ingrédients nécessaire par recette.
     SELECT recette.nom,  COUNT(contenir.id_ingredient) AS nombre_ingredients
     FROM recette
@@ -14,13 +13,13 @@
     ORDER BY recette.duree DESC;
 
 
-
+ 
 --3- Afficher les recettes qui nécessitent au moins 30 min de préparation
     SELECT nom 
     FROM recette 
     WHERE duree >= 30 ;
 
-
+    
 
 --4- Afficher les recettes dont le nom contient le mot « Salade » (peu importe où est situé le mot en question)
     SELECT nom 
